@@ -1,56 +1,53 @@
-const mongoose = require('mongoose');
-const validator = require('validator');
-const bcrypt = require('bcryptjs');
+const mongoose = require('mongoose'); // For defining the schema and interacting with MongoDB
+const validator = require('validator'); // For validating email format
+const bcrypt = require('bcryptjs'); // For hashing passwords
 
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, 'Please provide name'],
+        required: [true, 'Please provide name'], // Name is required with a custom error message
         minlength: 3,
         maxlength: 50,
     },
     email: {
         type: String,
-        unique: true,
-        required: [true, 'Please provide email'],
+        unique: true, // Ensures each email is unique
+        required: [true, 'Please provide email'], // Email is required
         validate: {
-            validator: validator.isEmail,
+            validator: validator.isEmail, // Validates email format using validator
             message: 'Please provide valid email',
         },
     },
     password: {
         type: String,
-        required: [true, 'Please provide password'],
-        minlength: 6,
+        required: [true, 'Please provide password'], // Password is required
+        minlength: 6, // Minimum password length
     },
     role: {
         type: String,
-        enum: ['admin', 'user', 'moderator'],
-        default: 'user',
+        enum: ['admin', 'user', 'moderator'], // Allowed values for role
+        default: 'user', // Default role is 'user'
     },
-    verificationToken: String,
+    verificationToken: String, // Token for email verification
     isVerified: {
         type: Boolean,
-        default: false,
+        default: false, // By default, user is not verified
     },
-    verified: Date,
-    passwordToken: {
-        type: String,
-    },
-    passwordTokenExpirationDate: {
-        type: Date,
-    },
+    verified: Date, // Date when the user is verified
+    passwordToken: String, // Token for resetting password
+    passwordTokenExpirationDate: Date, // Expiration date for the password reset token
 });
 
+// Pre-save middleware to hash the password if it's new or modified
 UserSchema.pre('save', async function () {
-    if (!this.isModified('password')) return;
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+    if (!this.isModified('password')) return; // Skip if password is not modified
+    const salt = await bcrypt.genSalt(10); // Generate a salt
+    this.password = await bcrypt.hash(this.password, salt); // Hash the password
 });
 
+// Method to compare entered password with the stored hashed password
 UserSchema.methods.comparePassword = async function (canditatePassword) {
-    const isMatch = await bcrypt.compare(canditatePassword, this.password);
-    return isMatch;
+    return bcrypt.compare(canditatePassword, this.password); // Returns true if passwords match
 };
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('User', UserSchema); // Export the User model

@@ -16,6 +16,8 @@ const sendVerificationEmail = async ({
     subject: 'Email Confirmation',
     html: `<h4> Hello, ${name}</h4>
     ${message}
+    <p>email: ${email}</p>
+    <p>verificationToken: ${verificationToken}</p>
     `,
   });
 };

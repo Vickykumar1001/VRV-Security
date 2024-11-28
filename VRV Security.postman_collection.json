@@ -1,0 +1,337 @@
+{
+	"info": {
+		"_postman_id": "46b830b0-f522-4d5d-a605-ee99df79014f",
+		"name": "VRV Security",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24973680"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"bt21ec038@nitmz.ac.in\",\r\n    \"name\": \"Vicky\",\r\n    \"password\":\"Secret\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register"
+							]
+						},
+						"description": "Registers a new user. If it's the first user being registered, they will be assigned the **admin** role. After registration, a verification email will be sent with a token to verify the email."
+					},
+					"response": []
+				},
+				{
+					"name": "Verify-Email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"verificationToken\": \"e4ff4c8c9862a1776ca80b334220ed7a5f78752a5859318f0c8054455bd1fa6765d597503c5cac60\",\r\n    \"email\": \"bt21ec038@nitmz.ac.in\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/auth/verify-email",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"verify-email"
+							]
+						},
+						"description": "Verifies the user's email address using the verification token sent during registration. The token should be sent as a query parameter.  \n  \nFrontend is not made, so please take token from email and verify manually."
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"bt21ec038@nitmz.ac.in\",\r\n    \"password\":\"Password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						},
+						"description": "Logs the user in by validating the provided credentials (email and password)."
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/auth/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"logout"
+							]
+						},
+						"description": "Logs the user out by invalidating the refresh token and deleting it from the database. Both the access and refresh tokens are cleared from the **cookies**."
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot-Password - (Emails Forgot Password Link )",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"bt21ec038@nitmz.ac.in\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/auth/forgot-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"forgot-password"
+							]
+						},
+						"description": "Sends a password reset email with a token (valid for 10 minutes). The user needs to click the link in the email to reset the password."
+					},
+					"response": []
+				},
+				{
+					"name": "Reset-Password (Verify Link on forgot password)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\":\"1df304502884bc174dd0d626ace1fd5d518efa6c4c57e4f0cbbce6d32a3da0d4ad4aeacbfcdf59d1d72fcbdc02519907d0878eb141ed28b9a2019f9d27d3f946ca3e4af10bdd\",\r\n    \"email\":\"bt21ec038@nitmz.ac.in\",\r\n    \"password\":\"NewPassword\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/auth/reset-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"reset-password"
+							]
+						},
+						"description": "Resets the user's password using the reset token sent via email. The user needs to provide the token, email, and the new password.  \n\nFrontend is not made, so please take token from email and verify manually."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "GetAllUsers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/v1/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								""
+							]
+						},
+						"description": "Retrieves a list of all users, excluding their passwords. This route is restricted to **admins** and **moderators** only."
+					},
+					"response": []
+				},
+				{
+					"name": "GetSingleUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/v1/users/6748754606abfd5ec1bebcc5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"6748754606abfd5ec1bebcc5"
+							]
+						},
+						"description": "Retrieves a single user's details by their user ID. This route is restricted to the **admin**, **moderator**, or the user whose details are being requested."
+					},
+					"response": []
+				},
+				{
+					"name": "GetCurrentUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/v1/users/showMe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"showMe"
+							]
+						},
+						"description": "Retrieves the details of the currently authenticated user (the user making the request)."
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/v1/users/6748754606abfd5ec1bebcc5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"6748754606abfd5ec1bebcc5"
+							]
+						},
+						"description": "Allows a user to update their own information, or an **admin** can update the user's information. **Moderators** and **Users** cannot change the user's role."
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Password",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPassword\":\"Secret\",\r\n     \"newPassword\":\"newSecret\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/users//updateUserPassword",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"",
+								"updateUserPassword"
+							]
+						},
+						"description": "Allows a user to update their password. Only the currently authenticated user can change their password (cannot be changed by an **admin** for another user)."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
